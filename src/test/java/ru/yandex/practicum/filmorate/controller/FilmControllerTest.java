@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
@@ -53,13 +54,13 @@ class FilmControllerTest {
                 .build();
 
         filmController.addFilm(film);
-        AssertionError errorNameEmpty = assertThrows(AssertionError.class,
+        ValidationException errorNameEmpty = assertThrows(ValidationException.class,
                 () -> filmController.addFilm(filmNameEmpty));
-        AssertionError errorDescriptionOver200 = assertThrows(AssertionError.class,
+        ValidationException errorDescriptionOver200 = assertThrows(ValidationException.class,
                 () -> filmController.addFilm(filmDescriptionOver200));
-        AssertionError errorRealaseDate = assertThrows(AssertionError.class,
+        ValidationException errorRealaseDate = assertThrows(ValidationException.class,
                 () -> filmController.addFilm(filmRealaseDateBefore1895));
-        AssertionError errorDurationZero = assertThrows(AssertionError.class,
+        ValidationException errorDurationZero = assertThrows(ValidationException.class,
                 () -> filmController.addFilm(filmDurationZero));
 
         assertEquals(filmController.filmDeposit.get(1), film, "Ошибка. Фильм не добавлен.");
@@ -124,13 +125,13 @@ class FilmControllerTest {
                 .build();
 
         filmController.updateFilm(filmUp);
-        AssertionError errorNameEmpty = assertThrows(AssertionError.class,
+        ValidationException errorNameEmpty = assertThrows(ValidationException.class,
                 () -> filmController.updateFilm(filmNameEmpty));
-        AssertionError errorDescriptionOver200 = assertThrows(AssertionError.class,
+        ValidationException errorDescriptionOver200 = assertThrows(ValidationException.class,
                 () -> filmController.updateFilm(filmDescriptionOver200));
-        AssertionError errorReleaseDate = assertThrows(AssertionError.class,
+        ValidationException errorReleaseDate = assertThrows(ValidationException.class,
                 () -> filmController.updateFilm(filmReleaseDateBefore1895));
-        AssertionError errorDurationZero = assertThrows(AssertionError.class,
+        ValidationException errorDurationZero = assertThrows(ValidationException.class,
                 () -> filmController.updateFilm(filmDurationZero));
 
         assertEquals(filmController.filmDeposit.get(1), filmUp, "Ошибка. Фильм не обновлен.");

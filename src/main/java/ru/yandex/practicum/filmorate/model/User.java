@@ -2,8 +2,9 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -12,10 +13,13 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @AllArgsConstructor
 public class User {
-    int id;
-    String login;
-    String name;
-    String email;
-    LocalDate birthday;
+    protected int id;
+    @NotBlank
+    protected String login;
+    protected String name;
+    @NotBlank
+    @Email
+    protected String email;
+    protected LocalDate birthday;
 
 }

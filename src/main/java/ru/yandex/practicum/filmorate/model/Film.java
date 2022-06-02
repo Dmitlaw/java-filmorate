@@ -2,9 +2,9 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
 
-import javax.xml.datatype.Duration;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -13,10 +13,13 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @AllArgsConstructor
 public class Film {
-    int id;
-    String name;
-    String description;
-    LocalDate releaseDate;
-    int duration;
+    protected int id;
+    @NotBlank
+    protected String name;
+    @NotBlank
+    protected String description;
+    @NotNull
+    protected LocalDate releaseDate;
+    protected int duration;
 
 }

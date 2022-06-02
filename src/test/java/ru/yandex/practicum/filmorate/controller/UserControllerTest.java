@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
@@ -49,13 +50,13 @@ class UserControllerTest {
                 .build();
 
         userController.addUser(user);
-        AssertionError errorEmail = assertThrows(AssertionError.class,
+        ValidationException errorEmail = assertThrows(ValidationException.class,
                 () -> userController.addUser(userWrongEmail));
-        AssertionError errorLoginEmpty = assertThrows(AssertionError.class,
+        ValidationException errorLoginEmpty = assertThrows(ValidationException.class,
                 () -> userController.addUser(userLoginEmpty));
-        AssertionError errorLoginSpace = assertThrows(AssertionError.class,
+        ValidationException errorLoginSpace = assertThrows(ValidationException.class,
                 () -> userController.addUser(userLoginSpace));
-        AssertionError errorBirthFuture = assertThrows(AssertionError.class,
+        ValidationException errorBirthFuture = assertThrows(ValidationException.class,
                 () -> userController.addUser(userBirthFuture));
 
         assertEquals(userController.userDeposit.get(1), user, "Ошибка. Пользователь не добавлен.");
@@ -116,13 +117,13 @@ class UserControllerTest {
                 .build();
 
         userController.updateUser(userUp);
-        AssertionError errorEmail = assertThrows(AssertionError.class,
+        ValidationException errorEmail = assertThrows(ValidationException.class,
                 () -> userController.updateUser(userWrongEmail));
-        AssertionError errorLoginEmpty = assertThrows(AssertionError.class,
+        ValidationException errorLoginEmpty = assertThrows(ValidationException.class,
                 () -> userController.updateUser(userLoginEmpty));
-        AssertionError errorLoginSpace = assertThrows(AssertionError.class,
+        ValidationException errorLoginSpace = assertThrows(ValidationException.class,
                 () -> userController.updateUser(userLoginSpace));
-        AssertionError errorBirthFuture = assertThrows(AssertionError.class,
+        ValidationException errorBirthFuture = assertThrows(ValidationException.class,
                 () -> userController.updateUser(userBirthFuture));
 
         assertEquals(userController.userDeposit.get(1), userUp, "Ошибка. Пользователь не обновлен");
