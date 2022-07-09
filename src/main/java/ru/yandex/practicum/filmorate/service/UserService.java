@@ -48,8 +48,11 @@ public class UserService {
         User user = userStorage.getUserDeposit().get(idUser);
         User userFriend = userStorage.getUserDeposit().get(idNewFriend);
 
-        user.getFriendsList().add(idNewFriend);
-        userFriend.getFriendsList().add(idUser);
+        if (!user.getFriendsList().contains((Object) idNewFriend)
+                && !userFriend.getFriendsList().contains((Object) idUser)) {
+            user.getFriendsList().add(idNewFriend);
+            userFriend.getFriendsList().add(idUser);
+        }
     }
 
     public void deleteFriend(int idUser, int idUser2) {
