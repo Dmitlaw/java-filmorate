@@ -1,63 +1,69 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
-import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/films")
 @Slf4j
 public class FilmController {
-    protected HashMap<Integer, Film> filmDeposit = new HashMap<>();
-    protected LocalDate firstFilm = LocalDate.of(1895, 12, 28);
-    protected int id = 1;
+    protected FilmService filmService;
+
+    @Autowired
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
+    }
 
     @PostMapping
-    public Film addFilm(@Valid @RequestBody Film film) {
-        if (checkInputFilm(film)) {
-            film.setId(id());
-            filmDeposit.put(film.getId(), film);
-            log.info("Фильм " + film.getName() + " добавлен.");
-        } else {
-            log.warn("Ошибка. Введено недопустимое значение.");
-            throw new ValidationException("Ошибка. Введено недопустимое значение.");
-        }
+    public Film addFilm(@RequestBody Film film) {
+        filmService.addFilm(film);
+        log.info("Фильм " + film.getName() + " добавлен.");
         return film;
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film film) {
-        if (checkInputFilm(film)) {
-            filmDeposit.put(film.getId(), film);
-            log.info("Фильм " + film.getName() + " обновлен.");
-        } else {
-            log.warn("Ошибка. Введено недопустимое значение.");
-            throw new ValidationException("Ошибка. Введено недопустимое значение.");
-        }
+    public Film updateFilm(@RequestBody Film film) {
+        filmService.updateFilm(film);
+        log.info("Фильм " + film.getName() + " обновлен.");
         return film;
     }
 
     @GetMapping
     public ArrayList<Film> getAllFilm() {
-        log.info("Запрошен список всех фильмов, метод getAllFilm()");
-        return new ArrayList<>(filmDeposit.values());
+        log.info("Запроше список фильмов.");
+        return new ArrayList<>(filmService.getAllFilm());
     }
 
-    private boolean checkInputFilm(Film film) {
-        return !film.getName().isEmpty()
-                && film.getDescription().length() <= 200
-                && film.getReleaseDate().isAfter(firstFilm)
-                && film.getDuration() > 0
-                && film.getId() >= 0;
+    @GetMapping("/{id}")
+    public Film getFilm(@PathVariable("id") int id) {
+        log.info("Запрошен фильм с ID № " + id);
+        return filmService.getFilm(id);
     }
 
-    private int id() {
-        return id++;
+    @PutMapping("/{id}/like/{userId}")
+    public void like(@PathVariable("id") int id,
+                     @PathVariable("userId") int userId) {
+        filmService.addLike(id, userId);
+        log.info("Фильму с ID № " + id + " добавил лайк пользователь с ID № " + userId);
     }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public void unlike(@PathVariable("id") int id,
+                       @PathVariable("userId") int userId) {
+        filmService.deleteLike(id, userId);
+        log.info("Фильму с ID № " + id + " удалил лайк пользователь с ID № " + userId);
+    }
+
+    @GetMapping("/popular")
+    public List<Film> getPopular(@RequestParam(value = "count", defaultValue = "10") int count) {
+        log.info("Запрошен список популярных фильмов");
+        return filmService.getPopularFilms(count);
+    }
+
 }

@@ -5,6 +5,7 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Builder
 @Getter
@@ -21,5 +22,5 @@ public class Film {
     @NotNull
     protected LocalDate releaseDate;
     protected int duration;
-
+    protected final ArrayList<Integer> likesList = new ArrayList<>();
 }

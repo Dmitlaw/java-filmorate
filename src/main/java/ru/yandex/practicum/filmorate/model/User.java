@@ -5,6 +5,7 @@ import lombok.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Builder
 @Getter
@@ -21,5 +22,5 @@ public class User {
     @Email
     protected String email;
     protected LocalDate birthday;
-
+    protected final ArrayList<Integer> friendsList = new ArrayList<>();
 }
